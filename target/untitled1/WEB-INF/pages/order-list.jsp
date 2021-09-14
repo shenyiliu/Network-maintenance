@@ -126,8 +126,13 @@
 											</button>
 										</security:authorize>
 										<security:authorize access="hasRole('ELEMENT_order:page-list')">
-											<button type="button" onclick="window.location.href='${pageContext.request.contextPath}/url/order-page-list'" class="btn btn-default" title="删除">
+											<button type="button" onclick="window.location.href='${pageContext.request.contextPath}/url/order-page-list'" class="btn btn-default" title="分配订单">
 												<i class="fa fa-file-o"></i> 分配订单
+											</button>
+										</security:authorize>
+										<security:authorize access="hasRole('ELEMENT_order:page-list')">
+											<button type="button" onclick="btnAuto()" class="btn btn-default" title="自动分配">
+												<i class="glyphicon glyphicon-ok"></i> 自动分配
 											</button>
 										</security:authorize>
 
@@ -155,6 +160,7 @@
 										<th class="" style="padding-right: 0px; width: 4%"><input
 											id="selall" type="checkbox" class="icheckbox_square-blue">
 										</th>
+										<th class="sorting_asc sorting_asc_disabled" style="width: 8%">ID</th>
 										<th class="sorting_asc sorting_asc_disabled" style="width: 8%">订单ID</th>
 										<th class="sorting_asc sorting_asc_disabled" style="width: 8%">姓名</th>
 										<th class="sorting_desc sorting_desc_disabled" style="width: 20%">下单时间</th>
@@ -304,6 +310,7 @@
 	<script type="text/javascript">
 		var $webName = "${pageContext.request.contextPath}";
 	</script>
+	<script src="${pageContext.request.contextPath}/plugins/layer/layer.js"></script>
 	<script>
 
 		var $pageNum = 1;//当前页
@@ -371,6 +378,7 @@
 				console.log(order);
 				$("tbody").append("<tr><td><input class='checkItem' type='checkbox'></td>"+
 				"<td>"+order.id+"</td>"+
+				"<td>"+order.orderCode+"</td>"+
 				"<td>"+order.name+"</td>"+
 				"<td>"+order.orderTime +"</td>"+
 				"<td>"+order.phone +"</td>"+
@@ -559,6 +567,23 @@
 				$(this).data("clicks", !clicks);
 			});
 		});
+
+		function btnAuto() {
+			$.ajax({
+				url:"${pageContext.request.contextPath}/order/insertAutomatic",
+				type:"get",
+				dataType:"json",
+				success:function (info) {
+					if (info>0){
+						layer.msg("分配成功");
+					}else {
+						layer.msg("订单已经全部分配完成");
+					}
+
+				}
+			})
+		}
+
 	</script>
 </body>
 

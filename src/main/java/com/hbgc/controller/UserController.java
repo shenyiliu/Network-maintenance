@@ -49,7 +49,7 @@ public class UserController {
     @RequestMapping("/userInsert")
     @ResponseBody
     public int userInsert(User user){
-        int num=userService.insertUser(user);
+        int num=userService.insertUserRegister(user);
         return num;
     }
 
@@ -100,6 +100,8 @@ public class UserController {
     public User userSelectLogin(String name, HttpServletRequest request){
         //查询账号密码登录
         User user1=userService.selectUserLogin(name);
+
+
         HttpSession session=request.getSession(true);
         session.setAttribute("userInfo",user1);
         return user1;
@@ -128,6 +130,9 @@ public class UserController {
         //查询账号密码登录
         User user1=userService.selectUserLogin(name);
         Role roleItem=userService.selectRole(user1.getId());
+
+        //添加登录时间
+        int num=userService.updateDateTime(name);
 
         HttpSession session=request.getSession(true);
         session.setAttribute("userInfo",user1);

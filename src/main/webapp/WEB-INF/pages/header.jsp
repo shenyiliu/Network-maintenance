@@ -8,8 +8,8 @@
 <header class="main-header" style="background-color: black" >
 	<!-- Logo -->
 	<a href="${pageContext.request.contextPath}/url/main" class="logo" style="background-color: #222D32"> <!-- mini logo for sidebar mini 50x50 pixels -->
-		<span class="logo-mini">心理健康</span> <!-- logo for regular state and mobile devices -->
-		<span class="logo-lg"><b>大学生心理健康语料库管理系统</b></span>
+		<span class="logo-mini">网络维修</span> <!-- logo for regular state and mobile devices -->
+		<span class="logo-lg"><b>网络维修管理系统</b></span>
 	</a>
 	<!-- Header Navbar: style can be found in header.less -->
 	<nav class="navbar navbar-static-top" style="background-color:#222D32">

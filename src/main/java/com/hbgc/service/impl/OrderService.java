@@ -8,7 +8,7 @@ import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.*;
 
 @Service
 public class OrderService implements IOrderService {
@@ -97,7 +97,86 @@ public class OrderService implements IOrderService {
         return orderDao.selectOrderUserCode(orderCode);
     }
 
-    //9.根据订单号查询信息
+    //自动分配订单
+    @Override
+    public int insertAutomatic() {
+        //查询全部维修人员id
+        List<User> users=orderDao.selectUserWX();
+
+        //查询全部未接订单
+        List<Order> orders=orderDao.selectOrderStatue(0);
+        //创建一个存订单id的集合
+        List<Integer> orderID=new ArrayList<>();
+        for (Order order:orders){
+            orderID.add(order.getId());
+        }
+
+        //判断是否能平均分配订单
+        int num=orders.size()%users.size();
+        int sum=0;
+
+        //判断是否可以整除
+        if (num!=0){
+            int avg=orders.size()/users.size();
+            for (User user:users){
+                int count=0;
+                Iterator<Integer> it=orderID.iterator();
+                while(it.hasNext()){
+                    int id= it.next();
+                    if (count<avg){
+                        sum+=orderDao.insertOrderItem(user.getId(),id);
+                        sum+=orderDao.updateOrderState(id);
+                        it.remove();
+                        count++;
+                    }else{
+                        continue;
+                    }
+                }
+
+            }
+            sum+=orderDao.insertOrderItem(users.get(0).getId(),orders.get(orders.size()-1).getId());
+            sum+=orderDao.updateOrderState(orders.get(orders.size()-1).getId());
+        }else {
+            int avg=orders.size()/users.size();
+            for (User user:users){
+                int count=0;
+                Iterator<Integer> it=orderID.iterator();
+                while(it.hasNext()){
+                    int id= it.next();
+                    if (count<avg){
+                        sum+=orderDao.insertOrderItem(user.getId(),id);
+                        sum+=orderDao.updateOrderState(id);
+                        it.remove();
+                        count++;
+                    }else{
+                        continue;
+                    }
+                }
+
+            }
+        }
+
+        return sum;
+
+
+    }
+
+    @Override
+    public int selectDayNum(Integer num) {
+
+        int nums=orderDao.selectDayNum(num);
+        return nums;
+    }
+
+    @Override
+    public int selectOrderStateNum(Integer orderStatue) {
+        return orderDao.selectOrderStateNum(orderStatue);
+    }
+
+    @Override
+    public int selectOrderAllNum() {
+        return orderDao.selectOrderAllNum();
+    }
 
 
 }

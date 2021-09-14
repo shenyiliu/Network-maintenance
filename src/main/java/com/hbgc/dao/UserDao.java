@@ -14,7 +14,7 @@ import java.util.Set;
 public interface UserDao {
 
     //1.查询用户信息
-    @Select("select id,state,name,mobile,password,address from `user`")
+    @Select("select id,name,state,mobile,password,address,gen_time,login_time,email from `user` ")
     List<User> selectUser();
 
     //2.添加用户信息
@@ -43,7 +43,7 @@ public interface UserDao {
     User selectUserLogin(User user);
 
     //8.注册
-    @Insert("insert into user values(null,0,#{name},#{mobile},#{password},#{address})")
+    @Insert("insert into user(id,state,name,mobile,password,address,gen_time) values(null,0,#{name},#{mobile},#{password},#{address},#{gentime})")
     int insertUserRegister(User user);
 
     //9.获取权限信息
@@ -61,5 +61,13 @@ public interface UserDao {
     //12.查询用户拥有的角色
     @Select("select * from role where id in (select roleID from user_role where userID =#{userID})")
     Role selectRole(Integer userID);
+
+    //13.根据用户名查询信息
+    @Select("select id,name,state,mobile,password,address from user where name=#{name}")
+    User selectName(String name);
+
+    //添加登录时间
+    @Update("update user set login_time=#{login_time} where name=#{name};")
+    int updateDateTime(@Param("login_time") String login_time,@Param("name") String name);
 
 }

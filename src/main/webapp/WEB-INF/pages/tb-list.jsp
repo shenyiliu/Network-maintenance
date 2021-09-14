@@ -107,12 +107,12 @@
 					</div>
 
 					<div class="box-body">
-						<div style="width: 50%;height: 600px;float: left;" id="yuanBing">
+						<div style="width: 100%;height: 600px;float: left;" id="yuanBing">
 
 						</div>
-						<div style="width: 50%;height: 600px;float: left;" id="LeiDa">
+<%--						<div style="width: 50%;height: 600px;float: left;" id="LeiDa">--%>
 
-						</div>
+<%--						</div>--%>
 						<div id="zhiFang" style="width: 100%;height: 500px;float: left;">
 
 						</div>
@@ -287,564 +287,336 @@
 	</script>
 </body>
 <script type="text/javascript">
-	//圆饼图表
+
 	$(document).ready(function () {
 
+		ZXtu();
+
+		SXtu();
+	})
+
+
+	//折线图
+	function ZXtu() {
 		$.ajax({
-			url:"${pageContext.request.contextPath}/notice/selectAVG",
+			url:"${pageContext.request.contextPath}/order/selectDayNum",
 			type:"get",
 			dataType:"json",
 			success:function (info) {
-				//圆饼图表
-				var chartDom = document.getElementById('yuanBing');
+				var chartDom = document.getElementById('zhiFang');
 				var myChart = echarts.init(chartDom);
 				var option;
 
+				var xData = (function () {
+					var data = [];
+					for (var i = 1; i < 31; i++) {
+						data.push(i + '日');
+					}
+					return data;
+				})();
+
+
 				option = {
-					title: {
-						text: '语料数据统计',
-						left: 'left'
-					},
+					backgroundColor: '#1A1835',
+
 					tooltip: {
-						trigger: 'item',
-						formatter: '{a} <br/>{b}: {c} ({d}%)'
+						trigger: 'axis',
+						axisPointer: {
+							type: 'shadow',
+							textStyle: {
+								color: '#fff',
+							},
+						},
+					},
+					grid: {
+						borderWidth: 0,
+						top: 110,
+						bottom: 95,
+						textStyle: {
+							color: '#fff',
+						},
 					},
 					legend: {
-						top:30,
-						data: ['躯体化', '强迫症状', '人际关系敏感', '抑郁', '焦虑', '敌对', '恐怖', '偏执', '精神病性', '其他','总分','平均分','阴性项目数','阳性项目数','预警分值']
+						x: '46%',
+						top: '11%',
+						textStyle: {
+							color: '#90979c',
+						},
+						data: ['订单量'],
 					},
+
+					calculable: true,
+					xAxis: [
+						{
+							type: 'category',
+							axisLine: {
+								lineStyle: {
+									color: 'rgba(204,187,225,0.5)',
+								},
+							},
+							splitLine: {
+								show: false,
+							},
+							axisTick: {
+								show: false,
+							},
+							data: xData,
+						},
+					],
+
+					yAxis: [
+						{
+							type: 'value',
+							splitLine: {
+								show: false,
+							},
+							axisLine: {
+								lineStyle: {
+									color: 'rgba(204,187,225,0.5)',
+								},
+							},
+						},
+					],
+					dataZoom: [
+						{
+							show: true,
+							height: 30,
+							xAxisIndex: [0],
+							bottom: 30,
+
+							start: 10,
+							end: 80,
+							handleIcon:
+									'path://M306.1,413c0,2.2-1.8,4-4,4h-59.8c-2.2,0-4-1.8-4-4V200.8c0-2.2,1.8-4,4-4h59.8c2.2,0,4,1.8,4,4V413z',
+							handleSize: '110%',
+							handleStyle: {
+								color: '#5B3AAE',
+							},
+							textStyle: {
+								color: 'rgba(204,187,225,0.5)',
+							},
+							fillerColor: 'rgba(67,55,160,0.4)',
+							borderColor: 'rgba(204,187,225,0.5)',
+						},
+						{
+							type: 'inside',
+							show: true,
+							height: 15,
+							start: 1,
+							end: 35,
+						},
+					],
 					series: [
 						{
-							name: '数据统计',
-							type: 'pie',
-							selectedMode: 'single',
-							radius: [0, '30%'],
+							name: '订单量',
+							type: 'line',
+							symbolSize: 10,
+							symbol: 'circle',
+							itemStyle: {
+								color: '#c257F6',
+							},
+							markPoint: {
+								label: {
+									normal: {
+										textStyle: {
+											color: '#fff',
+										},
+									},
+								},
+								data: [
+									{
+										type: 'max',
+										name: '最大值',
+									},
+									{
+										type: 'min',
+										name: '最小值',
+									},
+								],
+							},
+							data: info
+						},
+					],
+				};
+				option && myChart.setOption(option);
+			}
+
+		});
+
+
+
+
+	}
+
+	//扇形图
+	function SXtu() {
+		$.ajax({
+			url:"${pageContext.request.contextPath}/order/selectOrderStateNum",
+			type:"get",
+			dataType:"json",
+			success:function (info) {
+				var chartDom = document.getElementById('yuanBing');
+				var myChart=echarts.init(chartDom);
+				var option;
+
+				let series = [];
+				let pieDatas = [
+					{
+						"value": info[3],
+						"name": "全部订单"
+					},
+					{
+						"value": info[1],
+						"name": "已接订单"
+					},
+					{
+						"value": info[0],
+						"name": "未接订单"
+					},
+					{
+						"value": info[2],
+						"name": "完成订单"
+					}
+				];
+				let maxRadius =  80,
+						barWidth = 9,
+						barGap =  9;
+				let sumValue = 0;
+				let showValue = true,showPercent = true;
+				pieDatas.map(item => {
+					sumValue += item.value;
+				})
+				let barColor =  [
+
+					{
+						"color1": "rgba(53, 198, 215, 1)",
+						"color2": ""
+					},
+					{
+						"color1": "rgba(101, 223, 138, 1)",
+						"color2": ""
+					},
+					{
+						"color1": "rgba(253, 161, 79, 1)",
+						"color2": ""
+					},
+					{
+						"color1": "rgba(68,165,255,1)",
+						"color2": ""
+					}
+				];
+				pieDatas.map((item, i) => {
+					series.push({
+						type: 'pie',
+						clockWise: false, //顺时加载
+						hoverAnimation: false, //鼠标移入变大
+						radius: [(maxRadius - i * (barGap + barWidth)) + '%', (maxRadius - (i + 1) * barWidth - i * barGap) + '%'],
+						center: [ "30%", "50%"],
+						label: {
+							show: false
+						},
+						itemStyle: {
 							label: {
-								position: 'inner',
-								fontSize: 14,
+								show: false,
 							},
 							labelLine: {
 								show: false
 							},
-							data: [
-								{value: info.jg, name: '健康'},
-								{value: ( info.sum-info.jg ), name: '不健康'}
-							]
+							borderWidth: 5,
 						},
-						{
-							name: '数据统计',
-							type: 'pie',
-							radius: ['45%', '60%'],
-							labelLine: {
-								length: 30,
+						data: [{
+							value: item.value,
+							name: item.name,
+							itemStyle: {
+								color: barColor[i]&&barColor[i].color1 || 'rgba(68,165,255,1)'
+							}
+						}, {
+							value: sumValue - item.value,
+							name: '',
+							itemStyle: {
+								color: "transparent",
 							},
-							label: {
-								rich: {
-									a: {
-										color: '#6E7079',
-										lineHeight: 22,
-										align: 'center'
-									},
-									hr: {
-										borderColor: '#8C8D8E',
-										width: '100%',
-										borderWidth: 1,
-										height: 0
-									},
-									b: {
-										color: '#4C5058',
-										fontSize: 14,
-										fontWeight: 'bold',
-										lineHeight: 33
-									},
-									per: {
-										color: '#fff',
-										backgroundColor: '#4C5058',
-										padding: [3, 4],
-										borderRadius: 4
-									}
-								}
+							tooltip: {
+								show: false
 							},
-							data: [
-								{value: info.qth,name: '躯体化'},
-								{value: info.qpzz, name: '强迫症状'},
-								{value: info.rjgxmg, name: '人际关系敏感'},
-								{value: info.yy, name: '抑郁'},
-								{value: info.jl, name: '焦虑'},
-								{value: info.dd, name: '敌对'},
-								{value: info.kb, name: '恐怖'},
-								{value: info.pz, name: '偏执'},
-								{value: info.jsbx, name: '精神病性'},
-								{value: info.qt, name: '其他'},
-								{value: info.zf, name: '总分'},
-								{value: info.pjf, name: '平均分'},
-								{value: info.yinxxms, name: '阴性项目数'},
-								{value: info.yangxxms, name: '阳性项目数'},
-								{value: info.yjfz, name: '预警分值'},
-
-							]
-						}
-					]
-				};
-
-				option && myChart.setOption(option);
-			}
-		})
-
-
-	});
-
-	var $bjkData=[];
-	//柱状折线图
-	$(document).ready(function () {
-
-		//获取不健康数据
-		bjk();
-
-	});
-
-	//获取不健康数据
-	function bjk() {
-		$.ajax({
-			url:"${pageContext.request.contextPath}/notice/selectBzcAVG",
-			type:"get",
-			dataType:"json",
-			success:function (info) {
-				$bjkData=[
-					info.qth,
-					info.qpzz,
-					info.rjgxmg,
-					info.yy,
-					info.jl,
-					info.dd,
-					info.kb,
-					info.pz,
-					info.jsbx,
-					info.qt,
-					info.zf,
-					info.pjf,
-					info.yinxxms,
-					info.yangxxms,
-					info.yjfz,
-				];
-				bjkvalue($bjkData);
-				//显示雷达图
-				LeiDa($bjkData);
-			}
-		});
-
-	}
-
-	//正常数据
-	function bjkvalue(bjkData) {
-		$.ajax({
-			url:"${pageContext.request.contextPath}/notice/selectZcAVG",
-			type:"get",
-			dataType:"json",
-			success:function (info) {
-
-				// Generate data
-				var category = ['躯体化', '强迫症状', '人际关系敏感', '抑郁', '焦虑', '敌对', '恐怖', '偏执', '精神病性', '其他','总分','平均分','阴性项目数','阳性项目数','预警分值'];
-
-				var dottedBase = [];
-				var lineData = bjkData;
-				var barData = [
-					info.qth,
-					info.qpzz,
-					info.rjgxmg,
-					info.yy,
-					info.jl,
-					info.dd,
-					info.kb,
-					info.pz,
-					info.jsbx,
-					info.qt,
-					info.zf,
-					info.pjf,
-					info.yinxxms,
-					info.yangxxms,
-					info.yjfz,
-				];
-				var rateData = [];
-
-				for (var i = 0; i < 33; i++) {
-					// var date = i+2001;
-					// category.push(date)
-					var rate=barData[i]/lineData[i];
-					rateData[i] = rate.toFixed(2);
-				}
-
-				var chartDom = document.getElementById('zhiFang');
-				var myChart = echarts.init(chartDom);
-// option
-				option = {
-					title: {
-						text: '健康与不健康情况',
-						top:10,
-						x: 'left',
-						y: 0,
-						textStyle:{
-							color:'black',
-							fontSize:16,
-							fontWeight:'normal',
+							hoverAnimation: false
+						}]
+					})
+					series.push({
+						name: 'blank',
+						type: 'pie',
+						silent: true,
+						z: 0,
+						clockWise: false, //顺时加载
+						hoverAnimation: false, //鼠标移入变大
+						radius: [(maxRadius - i * (barGap + barWidth)) + '%', (maxRadius - (i + 1) * barWidth - i * barGap) + '%'],
+						center: [ "30%", "50%"],
+						label: {
+							show: false
 						},
-
-					},
-					backgroundColor: 'white',
-					tooltip: {
-						trigger: 'axis',
-						backgroundColor:'rgba(156,107,211,0.5)',
-						axisPointer: {
-							type: 'shadow',
-							label: {
-								show: true,
-								backgroundColor: '#7B7DDC'
-							}
-						}
-					},
-					legend: {
-						data: ['不健康', '健康','健康/不健康 比值',],
-						textStyle: {
-							color: '#B4B4B4',
-						},
-						top:'7%',
-					},
-					grid:{
-						x:'12%',
-						width:'82%',
-						y:'12%',
-					},
-					xAxis: {
-						data: category,
-						axisLine: {
-							lineStyle: {
-								color: '#B4B4B4'
-							}
-						},
-						axisTick:{
-							show:false,
-						},
-					},
-					yAxis: [{
-
-						splitLine: {show: false},
-						axisLine: {
-							lineStyle: {
-								color: '#B4B4B4',
-							}
-						},
-
-						axisLabel:{
-							formatter:'{value} ',
-						}
-					},
-						{
-
-							splitLine: {show: false},
-							axisLine: {
-								lineStyle: {
-									color: '#B4B4B4',
-								}
-							},
-							axisLabel:{
-								formatter:'{value} ',
-							}
-						}],
-
-					series: [{
-						name: '健康/不健康 比值',
-						type: 'line',
-						smooth: true,
-						showAllSymbol: true,
-						symbol: 'emptyCircle',
-						symbolSize: 8,
-						yAxisIndex: 1,
 						itemStyle: {
-							normal: {
-								color:'#F02FC2'},
-						},
-						data: rateData
-					},
-
-						{
-							name: '健康',
-							type: 'bar',
-							barWidth: 20,
-							itemStyle: {
-								normal: {
-									barBorderRadius: 5,
-									color: new echarts.graphic.LinearGradient(
-											0, 0, 0, 1,
-											[
-												{offset: 0, color: '#956FD4'},
-												{offset: 1, color: '#3EACE5'}
-											]
-									)
-								}
+							label: {
+								show: false,
 							},
-							data: barData
-						},
-
-						{
-							name: '不健康',
-							type: 'bar',
-							barGap: '-100%',
-							barWidth: 20,
-							itemStyle: {
-								normal: {
-									barBorderRadius: 5,
-									color: new echarts.graphic.LinearGradient(
-											0, 0, 0, 1,
-											[
-												{offset: 0, color: 'rgba(156,107,211,0.5)'},
-												{offset: 0.2, color: 'rgba(156,107,211,0.3)'},
-												{offset: 1, color: 'rgba(156,107,211,0)'}
-											]
-									)
-								}
+							labelLine: {
+								show: false
 							},
-							z: -12,
-
-							data: lineData
+							borderWidth: 5,
 						},
-					]
-				};
-
-				option && myChart.setOption(option);
-
-			}
-		});
-	}
-
-	//雷达图
-	function LeiDa(bjkData) {
-		$.ajax({
-			url:"${pageContext.request.contextPath}/notice/selectZcAVG",
-			type:"get",
-			dataType:"json",
-			success:function (info) {
-				var barData = [
-					info.qth,
-					info.qpzz,
-					info.rjgxmg,
-					info.yy,
-					info.jl,
-					info.dd,
-					info.kb,
-					info.pz,
-					info.jsbx,
-					info.qt,
-					info.zf,
-					info.pjf,
-					info.yinxxms,
-					info.yangxxms,
-					info.yjfz,
-				];
-				var chartDom = document.getElementById('LeiDa');
-				var myChart = echarts.init(chartDom);
-				var option = {
-					title: {
-						text: '雷达图',
+						data: [{
+							value: 1,
+							itemStyle: {
+								color: "rgba(255, 255, 255,.13)",
+								borderWidth: 0
+							},
+							tooltip: {
+								show: false
+							},
+							hoverAnimation: false
+						}]
+					});
+				})
+				option = {
+					grid: {
+						left:  0,
+						right:  0,
+						top:  0,
+						bottom:  0,
 					},
-					tooltip: {},
+					backgroundColor: '#1A1835',
+					tooltip: {
+						show: true,
+						trigger: "item",
+					},
 					legend: {
-						top: 20,
-						itemWidth: 12,
-						itemHeight: 12,
-						data: ['健康', '不健康'],
+						show: true,
+						left: '60%',
+						top: 'middle',
+						icon: "circle",
+						itemWidth: 10,
+						itemHeight: 10,
+						itemGap:  20,
 						textStyle: {
-							color: 'black',
+							fontSize:  16,
+							color:  '#fff',
 						},
+						formatter: (name) => {
+							var datas = pieDatas;
+							let total = 0;
+							datas.map(item => {
+								total += (item.value - 0)
+							})
+							let valueIndex = datas.map(item => item.name).indexOf(name);
+							return name + "  " + (showValue ? datas[valueIndex].value + (option.legendValueUnit || '') + ' ' : '') + (showPercent ? ((datas[valueIndex].value / total) * 100).toFixed(2) + "%" : '');
+						} ,
 					},
-					radar: {
-						radius: '60%',
-						splitNumber: 8,
-						axisLine: {
-							lineStyle: {
-								color: 'black',
-								opacity: 0.2,
-							},
-						},
-						splitLine: {
-							lineStyle: {
-								color: 'black',
-								opacity: 0.2,
-							},
-						},
-						splitArea: {
-							areaStyle: {
-								color: '#D2D7FD',
-								opacity: 1,
-								shadowBlur: 0,
-								shadowColor: 'black',
-								shadowOffsetX: 0,
-								shadowOffsetY: 0,
-							},
-						},
-						indicator: [
-							{
-								name: '躯体化',
-								max: 5,
-							},
-							{
-								name: '强迫症状',
-								max: 5,
-							},
-							{
-								name: '人际关系敏感',
-								max: 5,
-							},
-							{
-								name: '抑郁',
-								max: 5,
-							},
-							{
-								name: '焦虑',
-								max: 5,
-							},
-							{
-								name: '敌对',
-								max: 5,
-							},
-							{
-								name: '恐怖',
-								max: 5,
-							},
-							{
-								name: '偏执',
-								max: 5,
-							},
-							{
-								name: '精神病性',
-								max: 5,
-							},
-							{
-								name: '其他',
-								max: 5,
-							},
-							{
-								name: '总分',
-								max: 250,
-							},
-							{
-								name: '平均分',
-								max: 5,
-							},
-							{
-								name: '阴性项目数',
-								max: 100,
-							},
-							{
-								name: '阳性项目数',
-								max: 100,
-							},
-							{
-								name: '预警分值',
-								max: 150,
-							},
-						],
-					},
-					series: [
-						{
-							name: '预算 vs 开销',
-							type: 'radar',
-							itemStyle: {
-								normal: {
-									lineStyle: {
-										color: '#4A99FF',
-										// shadowColor: '#4A99FF',
-										// shadowBlur: 10,
-									},
-									shadowColor: '#4A99FF',
-									shadowBlur: 10,
-								},
-							},
-							areaStyle: {
-								normal: { // 单项区域填充样式
-									color: {
-										type: 'linear',
-										x: 0, //右
-										y: 0, //下
-										x2: 1, //左
-										y2: 1, //上
-										colorStops: [{
-											offset: 0,
-											color: '#4A99FF'
-										}, {
-											offset: 0.5,
-											color: 'rgba(0,0,0,0)'
-										}, {
-											offset: 1,
-											color: '#4A99FF'
-										}],
-										globalCoord: false
-									},
-									opacity: 1 // 区域透明度
-								}
-							},
-							data: [
-								{
-									value:barData,
-									name: '健康',
-								},
-							],
-						},
-						{
-							name: '预算 vs 开销',
-							type: 'radar',
-							symbolSize: 0,
-							itemStyle: {
-								normal: {
-									lineStyle: {
-										color: '#4BFFFC',
-										// shadowColor: '#4BFFFC',
-										// shadowBlur: 10,
-									},
-									shadowColor: '#4BFFFC',
-									shadowBlur: 10,
-								},
-							},
-							areaStyle: {
-								normal: { // 单项区域填充样式
-									color: {
-										type: 'linear',
-										x: 0, //右
-										y: 0, //下
-										x2: 1, //左
-										y2: 1, //上
-										colorStops: [{
-											offset: 0,
-											color: '#4BFFFC'
-										}, {
-											offset: 0.5,
-											color: 'rgba(0,0,0,0)'
-										}, {
-											offset: 1,
-											color: '#4BFFFC'
-										}],
-										globalCoord: false
-									},
-									opacity: 1 // 区域透明度
-								}
-							},
-							data: [
-								{
-									value: bjkData,
-									name: '不健康',
-								},
-							],
-						},
-
-					],
-					color:['#4A99FF','#4BFFFC'],
-					backgroundColor: 'white',
+					series: series,
 				};
+
 				option && myChart.setOption(option);
 
 			}
 		});
-
-
 	}
 </script>
 </html>

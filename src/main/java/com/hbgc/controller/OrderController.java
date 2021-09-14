@@ -138,4 +138,37 @@ public class OrderController {
     public Order selectOrderUserCode(String orderCode){
         return orderService.selectOrderUserCode(orderCode);
     }
+
+
+    //折线图 数据 selectDayNum
+    @RequestMapping("/selectDayNum")
+    @ResponseBody
+    public Integer[] selectDayNum(){
+        Integer[] list=new Integer[31];
+        for (int i=0;i<31;i++){
+            int num=orderService.selectDayNum(i+1);
+            list[i]=num;
+        }
+        return list;
+    }
+
+    //扇形图数据 selectOrderStateNum
+    @RequestMapping("/selectOrderStateNum")
+    @ResponseBody
+    public Integer[] selectOrderStateNum(){
+        Integer[] list=new Integer[4];
+        for (int i=0;i<3;i++){
+            int num=orderService.selectOrderStateNum(i);
+            list[i]=num;
+        }
+        list[3]=orderService.selectOrderAllNum();
+        return list;
+    }
+
+    //自动分配订单 insertAutomatic
+    @RequestMapping("/insertAutomatic")
+    @ResponseBody
+    public int insertAutomatic(){
+        return orderService.insertAutomatic();
+    }
 }

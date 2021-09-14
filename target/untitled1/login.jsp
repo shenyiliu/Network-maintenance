@@ -34,7 +34,7 @@
 		<div class="login-box-body" >
 
 			<div class="login-logo">
-				<a href="#">语料库管理系统</a>
+				<a href="#">网络维修管理系统</a>
 			</div>
 			<%--<p class="login-box-msg">登录系统</p>--%>
 
@@ -76,7 +76,7 @@
 		<footer style="width: 100%;background-color: white;height: 40px">
 
 			<div  style="float: left;padding: 10px;" >&nbsp;
-				<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;copyright：湖北工程学院 </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 大学生心理健康语料库管理系统  2021-2025
+				<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;copyright：湖北工程学院 </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 网络维修管理系统  2021-2025
 			</div>
 			<div class="pull-right hidden-xs" style="padding: 10px">
 				<b>Version</b> 1.2.0

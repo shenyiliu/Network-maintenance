@@ -18,6 +18,11 @@ public class User {
     private String mobile;
     private String password;
     private String address;
+
+    private String gentime;   //创建时间
+    private String logintime; //登录时间
+    private String email;      //电子邮箱
+
     private List<Role> roles;
     private Set<String> persissionSet;//权限码
 

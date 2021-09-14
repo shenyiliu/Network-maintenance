@@ -12,9 +12,9 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-<title>大学生心理健康语料库管理系统</title>
-<meta name="description" content="大学生心理健康语料库管理系统">
-<meta name="keywords" content="大学生心理健康语料库管理系统">
+<title>网络维修系统</title>
+<meta name="description" content="网络维修系统">
+<meta name="keywords" content="网络维修系统">
 
 <!-- Tell the browser to be responsive to screen width -->
 <meta
@@ -173,10 +173,10 @@
 															<div class="panel-body">
 																<div class="panel-title">
 																	<span class="label pull-right layui-bg-green">实时</span>
-																	<h5>语料库数量统计</h5>
+																	<h5>订单数量统计</h5>
 																</div>
 																<div class="panel-content">
-																	<h1 class="no-margins" id="Yw"></h1>
+																	<h1 class="no-margins" id="order"></h1>
 																	<small>当前分类总记录数</small>
 																</div>
 															</div>
@@ -229,15 +229,22 @@
 														</div>
 													</security:authorize>
 
+<%--													<security:authorize access="hasRole('MNUM_order_list')">--%>
+<%--														<div class="layui-col-xs3 layuimini-qiuck-module">--%>
+<%--															<a href="${pageContext.request.contextPath}/url/yj-list"  data-title="预警管理" data-icon="fa fa-calendar">--%>
+<%--																<i class="fa fa-calendar"></i>--%>
+<%--																<cite>预警管理</cite>--%>
+<%--															</a>--%>
+<%--														</div>--%>
+<%--													</security:authorize>--%>
 													<security:authorize access="hasRole('MNUM_order_list')">
 														<div class="layui-col-xs3 layuimini-qiuck-module">
-															<a href="${pageContext.request.contextPath}/url/yj-list"  data-title="预警管理" data-icon="fa fa-calendar">
+															<a href="${pageContext.request.contextPath}/url/order-list"  data-title="订单管理" data-icon="fa fa-hourglass-end">
 																<i class="fa fa-calendar"></i>
-																<cite>预警管理</cite>
+																<cite>订单管理</cite>
 															</a>
 														</div>
 													</security:authorize>
-
 													<security:authorize access="hasRole('MNUM_order_list')">
 														<div class="layui-col-xs3 layuimini-qiuck-module">
 															<a href="${pageContext.request.contextPath}/url/tb-list"  data-title="数据分析" data-icon="fa fa-hourglass-end">
@@ -445,7 +452,7 @@
 		var user=$("#user").html();
 		var role=$("#role").html();
 		var permission=$("#permission").html();
-		var Yw=$("#Yw").html();
+		var order=$("#order").html();
 
 
 		var myChart = echarts.init(document.getElementById('echarts-records'));
@@ -453,8 +460,8 @@
 
 		var option;
 
-		var dataAxis = ['用户统计', '角色统计', '权限统计', '语料库统计'];
-		var data = [user, role, permission, Yw];
+		var dataAxis = ['用户统计', '角色统计', '权限统计', '订单统计'];
+		var data = [user, role, permission, order];
 		var yMax = 500;
 		var dataShadow = [];
 
@@ -601,7 +608,7 @@
 		}
 
 
-		//获取 用户  角色   权限  语料库数量
+		//获取 用户  角色   权限  订单数量
 		function getSelectIndex() {
 
 			//用户
@@ -610,8 +617,8 @@
 			selectRoleIndex();
 			//权限
 			selectPermissionIndex();
-			//语料库数量
-			selectYwIndex();
+			//订单数量
+			selectOrderIndex();
 
 		}
 	//用户
@@ -642,10 +649,10 @@
 			}
 		})
 	}
-	//权限
+	//维修人员统计
 	function selectPermissionIndex() {
 		$.ajax({
-			url:"${pageContext.request.contextPath}/main/selectPermissionIndex",
+			url:"${pageContext.request.contextPath}/main/selectWXIndex",
 			data:{
 
 			},
@@ -657,17 +664,17 @@
 		})
 	}
 
-	//语料库数量
-	function selectYwIndex() {
+	//订单数量
+	function selectOrderIndex() {
 		$.ajax({
-			url:"${pageContext.request.contextPath}/main/selectYwIndex",
+			url:"${pageContext.request.contextPath}/main/selectorderIndex",
 			data:{
 
 			},
 			type:"get",
 			dataType: "json",
 			success:function (index) {
-				$("#Yw").append(index);
+				$("#order").append(index);
 			}
 		})
 	}

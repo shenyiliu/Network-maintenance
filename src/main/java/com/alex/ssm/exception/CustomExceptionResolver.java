@@ -35,7 +35,7 @@ public class CustomExceptionResolver implements HandlerExceptionResolver {
         //输出错误信息，便于在控制台查错
         System.out.println("发生错误了，错误信息如下：");
         System.out.println(e);
-        System.out.println();
+
 
         //错误信息
         ModelAndView modelAndView = new ModelAndView();

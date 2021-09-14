@@ -244,7 +244,6 @@
 					<div class="error-content">
 						<h2>出错了</h2>
 						<hr>
-						<p>${ message }</p>
 						<p>
 							发生错误 , 你可以 <a href="${pageContext.request.contextPath}/login.jsp">返回到登录页面</a>
 							重新登录

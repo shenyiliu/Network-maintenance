@@ -33,4 +33,12 @@ public interface MainDao {
     //6.根据id查询公告内容
     @Select("select id,title,name,noticeTime,context from notice where id=#{id}")
     Notice selectNoticeContext(Integer id);
+
+    //7.搜索订单数量
+    @Select("select count(1) from `order`")
+    int selectorderIndex();
+
+    //8.维修人员统计
+    @Select("select count(1) from user where id in (select userID from user_role where roleID=2)")
+    int selectWXIndex();
 }

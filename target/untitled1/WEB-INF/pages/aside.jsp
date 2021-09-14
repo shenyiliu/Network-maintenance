@@ -87,21 +87,21 @@
 				    </span>
 			    </a>
 				<ul class="treeview-menu">
-<%--					<li id="admin-order">--%>
-<%--                        <security:authorize access="hasRole('MNUM_order_list')">--%>
-<%--                            <a href="${pageContext.request.contextPath}/url/order-list">--%>
-<%--                                <i class="fa fa-circle-o"></i>订单管理--%>
-<%--                            </a>--%>
-<%--                        </security:authorize>--%>
-
-<%--                    </li>--%>
-                    <li id="admin-yj">
+					<li id="admin-order">
                         <security:authorize access="hasRole('MNUM_order_list')">
-                            <a href="${pageContext.request.contextPath}/url/yj-list">
-                                <i class="fa fa-circle-o"></i>预警管理
+                            <a href="${pageContext.request.contextPath}/url/order-list">
+                                <i class="fa fa-circle-o"></i>订单管理
                             </a>
                         </security:authorize>
+
                     </li>
+<%--                    <li id="admin-yj">--%>
+<%--                        <security:authorize access="hasRole('MNUM_order_list')">--%>
+<%--                            <a href="${pageContext.request.contextPath}/url/yj-list">--%>
+<%--                                <i class="fa fa-circle-o"></i>预警管理--%>
+<%--                            </a>--%>
+<%--                        </security:authorize>--%>
+<%--                    </li>--%>
                     <li id="admin-fx">
                         <security:authorize access="hasRole('MNUM_order_list')">
                             <a href="${pageContext.request.contextPath}/url/tb-list">

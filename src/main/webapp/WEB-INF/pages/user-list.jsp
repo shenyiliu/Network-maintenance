@@ -145,7 +145,7 @@
 										<th class="sorting_desc">用户名</th>
 										<th class="sorting_asc sorting_asc_disabled">手机号码</th>
 										<th class="sorting_asc sorting_asc_disabled">密码</th>
-										<th class="sorting_desc sorting_desc_disabled">地址</th>
+										<th class="sorting_desc sorting_desc_disabled">登录时间</th>
 										<th class="sorting">状态</th>
 										<th class="text-center">操作</th>
 									</tr>
@@ -279,12 +279,13 @@
 				$("tbody").empty();
 				
 				$.each(pageInfo.list,function(index,userInfo){
+
 					$("tbody").append("<tr><td><input class='checkItem' type='checkbox'></td>"+
 							"<td id='list_id'>"+ userInfo.id +"</td>"+
 							"<td>"+ userInfo.name +"</td>"+
 							"<td>"+ userInfo.mobile +"</td>"+
 							"<td>"+ userInfo.password +"</td>"+
-							"<td width='30%'>"+ userInfo.address +"</td>"+
+							"<td width='30%'>"+ userInfo.logintime +"</td>"+
 							"<td>"+ (userInfo.state == 0 ? '正常' : '禁用') +"</td>"+
 							"<td class='text-center'>"+
 								"<a href='#' class='btnUpdate btn bg-olive btn-xs'>修改</a>"+

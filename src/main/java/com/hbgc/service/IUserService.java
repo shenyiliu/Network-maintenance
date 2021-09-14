@@ -2,6 +2,7 @@ package com.hbgc.service;
 
 import com.hbgc.entity.Role;
 import com.hbgc.entity.User;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
@@ -33,4 +34,8 @@ public interface IUserService extends UserDetailsService {
     int insertUserRole(Integer userID,Integer roleID);
 
     Role selectRole(Integer userID);
+
+    User selectName(String name);
+
+    int updateDateTime(String name);
 }

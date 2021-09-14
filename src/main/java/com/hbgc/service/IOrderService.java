@@ -31,4 +31,12 @@ public interface IOrderService {
     List<Order> selectOrderStatue(Integer orderStatue);
 
     Order selectOrderUserCode(String orderCode);
+
+    int insertAutomatic();
+
+    int selectDayNum(Integer num);
+
+    int selectOrderStateNum(Integer orderStatue);
+
+    int selectOrderAllNum();
 }

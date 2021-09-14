@@ -114,7 +114,7 @@
 					if(password==passwordTwo){
 
 						$.ajax({
-							url:"${pageContext.request.contextPath}/user/userSelectRegister",
+							url:"${pageContext.request.contextPath}/register/userSelectRegister",
 							data:{
 								name:name,
 								mobile:mobile,
@@ -151,13 +151,14 @@
 			}else{
 				var num=1;
 				$.ajax({
-					url:"${pageContext.request.contextPath}/user/userSelectMobile",
+					url:"${pageContext.request.contextPath}/register/userSelectMobile",
 					type:"get",
 					data:{
 						mobile:mobile,
 					},
 					dataType: "json",
 					success:function(page){
+
 						if (page!=""&&num==1){
 							layer.msg('手机号已被注册');
 							$("#mobile").val("");
@@ -174,11 +175,13 @@
 			if (name!=""){
 				var num=1;
 				$.ajax({
-					url:"${pageContext.request.contextPath}/user/userSelectLoginA",
-					type:"get",
+					url:"${pageContext.request.contextPath}/register/userSelectLoginA",
+
 					data:{
 						name:name,
 					},
+					type:"get",
+					dataType: "json",
 					success:function(pageInfo){
 						if (pageInfo!=""&&num==1){
 							layer.msg('用户名已经注册');

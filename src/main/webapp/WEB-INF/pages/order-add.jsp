@@ -105,7 +105,7 @@
 
 					<div class="col-md-2 title">订单号</div>
 					<div class="col-md-4 data">
-						<input type="text" id="orderCode" class="form-control" placeholder="hbgc—+学号"
+						<input type="text" id="orderCode" class="form-control" placeholder="" readonly="readonly"
 							   value="">
 					</div>
 					<div class="col-md-2 title">姓名</div>
@@ -264,6 +264,9 @@
 			$(".textarea").wysihtml5({
 				locale : 'zh-CN'
 			});
+
+			randomNumber();
+
 		});
 
 		// 设置激活菜单
@@ -411,6 +414,19 @@
 			})
 		});
 
+		//随机生成订单号
+		function randomNumber() {
+			const now = new Date()
+			let month = now.getMonth() + 1
+			let day = now.getDate()
+			let hour = now.getHours()
+			let minutes = now.getMinutes()
+			let seconds = now.getSeconds()
+
+
+			var romder=now.getFullYear().toString() + month.toString() + day + hour + minutes + seconds + (Math.round(Math.random() * 89 + 100)).toString();
+			$("#orderCode").val(romder);
+		}
 
 	</script>
 </body>

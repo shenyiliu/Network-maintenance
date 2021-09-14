@@ -58,4 +58,20 @@ public class MainController {
     public Notice selectNoticeContext(Integer id){
         return iMainService.selectNoticeContext(id);
     }
+
+    //订单数量 selectorderIndex
+    @RequestMapping("/selectorderIndex")
+    @ResponseBody
+    public int selectorderIndex(){
+        int num=iMainService.selectorderIndex();
+        return num;
+    }
+
+    //维修人员统计 selectWXIndex
+    @RequestMapping("/selectWXIndex")
+    @ResponseBody
+    public int selectWXIndex(){
+        int num=iMainService.selectWXIndex();
+        return num;
+    }
 }

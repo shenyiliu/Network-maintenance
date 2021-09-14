@@ -44,4 +44,15 @@ public class MainService implements IMainService {
     public Notice selectNoticeContext(Integer id) {
         return mainDao.selectNoticeContext(id);
     }
+
+    //查询订单数量
+    @Override
+    public int selectorderIndex() {
+        return mainDao.selectorderIndex();
+    }
+
+    @Override
+    public int selectWXIndex() {
+        return mainDao.selectWXIndex();
+    }
 }

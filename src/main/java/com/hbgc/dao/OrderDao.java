@@ -17,7 +17,7 @@ public interface OrderDao {
     int insertOrderItem(@Param("userID") Integer userID, @Param("orderID")Integer orderID);
 
     //2.根据用户id查询订单
-    @Select("select id,name,orderTime,phone,address,orderStatue from `order` where id in(select orderID from user_order where userID=#{id})")
+    @Select("select id,orderCode,name,orderTime,phone,address,orderStatue from `order` where id in(select orderID from user_order where userID=#{id})")
     List<Order> selectOrderUserID(Integer id);
 
     //3.id删除订单
@@ -29,7 +29,7 @@ public interface OrderDao {
     int updateOrder(Order order);
 
     //5.根据订单id查询订单信息
-    @Select("select id,name,orderTime,phone,address,orderStatue from `order` where id=#{id}")
+    @Select("select id,orderCode,name,orderTime,phone,address,orderStatue from `order` where id=#{id}")
     Order selectOrderUserByID(Integer id);
 
     //5.根据订单号查询订单信息
@@ -53,5 +53,15 @@ public interface OrderDao {
     int updateOrderState(Integer id);
 
 
+    //查询每天的订单数量信息
+    @Select("select count(1) from `order` where  orderTime like concat('%-__-',#{num},'%') ")
+    int selectDayNum(@Param("num") Integer num);
 
+    //查询订单不同状态 的数量
+    @Select("select count(1) from `order` where orderStatue=#{orderStatue}")
+    int selectOrderStateNum(Integer orderStatue);
+
+    //查询全部订单数量
+    @Select("select count(1) from `order`")
+    int selectOrderAllNum();
 }

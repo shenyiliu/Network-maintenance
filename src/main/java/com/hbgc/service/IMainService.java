@@ -21,4 +21,8 @@ public interface IMainService {
     List<Notice> selectNoticeAll();
 
     Notice selectNoticeContext(Integer id);
+
+    int selectorderIndex();
+
+    int selectWXIndex();
 }

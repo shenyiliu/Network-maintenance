@@ -14,9 +14,12 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.SimpleFormatter;
 
 @Service("userService")
 public class UserService implements IUserService {
@@ -80,6 +83,8 @@ public class UserService implements IUserService {
     //9.注册
     @Override
     public int insertUserRegister(User user) {
+        SimpleDateFormat format=new SimpleDateFormat("yyyy:MM:dd hh:mm:ss");
+        user.setGentime(format.format(new Date()));
         return userDao.insertUserRegister(user);
     }
 
@@ -99,6 +104,19 @@ public class UserService implements IUserService {
     @Override
     public Role selectRole(Integer userID) {
         return userDao.selectRole(userID);
+    }
+
+    @Override
+    public User selectName(String name) {
+        return userDao.selectName(name);
+    }
+
+    @Override
+    public int updateDateTime(String name) {
+        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String login_time= format.format(new Date());
+       int num=userDao.updateDateTime(login_time,name);
+        return num;
     }
 
     @Override

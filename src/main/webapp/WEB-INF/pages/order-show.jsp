@@ -458,6 +458,7 @@
 		if(state==0){
 			var ids = new Array();//存储删除的id
 			var userWxID=$("#roleID").val();
+
 			$.each($(".checkItem:checked"),function(){
 				//删除产品的id
 				var id = $(this).parents("tr").children("td").eq(1).text();
